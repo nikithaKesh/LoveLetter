@@ -4,32 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A Letter For Ishara</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --env-width: min(84vw, 430px);
       --env-height: calc(var(--env-width) * 0.64);
 
-      --bg-1: #fff4f7;
-      --bg-2: #ffdbe7;
-      --bg-3: #ffc3d7;
+      --bg-1: #fff6fa;
+      --bg-2: #ffe2ec;
+      --bg-3: #ffcfe0;
+      --bg-4: #ffbfd7;
 
-      --pink-1: #fff0f5;
+      --pink-1: #fff3f7;
       --pink-2: #ffd9e8;
-      --pink-3: #ffb6cf;
-      --pink-4: #ff8db3;
-      --pink-5: #f45a96;
+      --pink-3: #ffbdd4;
+      --pink-4: #ff97bc;
+      --pink-5: #f35c97;
       --pink-6: #d93d78;
-      --pink-7: #b92d62;
+      --pink-7: #af2459;
+      --gold-1: #ffe7a6;
+      --gold-2: #e7b85f;
 
-      --text-dark: #4b2d37;
-      --text-soft: #7a5060;
-      --white-glass: rgba(255, 255, 255, 0.68);
+      --text-dark: #482b35;
+      --text-soft: #78515f;
       --shadow-soft: 0 10px 30px rgba(217, 61, 120, 0.12);
       --shadow-strong: 0 24px 60px rgba(185, 45, 98, 0.22);
+      --glass: rgba(255,255,255,0.72);
     }
 
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html,
@@ -39,18 +48,18 @@
       width: 100%;
       min-height: 100%;
       overflow: hidden;
-      font-family: Georgia, serif;
+      font-family: "Cormorant Garamond", Georgia, serif;
       background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(255,182,207,0.4), transparent 35%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+        radial-gradient(circle at top left, rgba(255,255,255,0.92), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255,182,207,0.36), transparent 35%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-4));
     }
 
     body {
       position: relative;
       display: grid;
       place-items: center;
-      transition: background 0.8s ease;
+      transition: background 0.9s ease;
     }
 
     body::before {
@@ -58,32 +67,52 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at 20% 25%, rgba(255,255,255,0.55) 0 2px, transparent 3px),
-        radial-gradient(circle at 75% 20%, rgba(255,255,255,0.45) 0 2px, transparent 3px),
-        radial-gradient(circle at 30% 75%, rgba(255,255,255,0.35) 0 1.5px, transparent 3px),
-        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.4) 0 1.5px, transparent 3px);
-      opacity: 0.7;
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,0.55) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 22%, rgba(255,255,255,0.45) 0 2px, transparent 3px),
+        radial-gradient(circle at 28% 75%, rgba(255,255,255,0.38) 0 2px, transparent 3px),
+        radial-gradient(circle at 75% 72%, rgba(255,255,255,0.32) 0 2px, transparent 3px);
+      opacity: 0.75;
       pointer-events: none;
       z-index: 0;
     }
 
+    body::after {
+      content: "";
+      position: fixed;
+      inset: -10%;
+      background:
+        radial-gradient(circle at 15% 25%, rgba(255, 185, 211, 0.28), transparent 18%),
+        radial-gradient(circle at 85% 20%, rgba(255, 220, 232, 0.34), transparent 16%),
+        radial-gradient(circle at 20% 85%, rgba(255, 192, 219, 0.25), transparent 18%),
+        radial-gradient(circle at 80% 80%, rgba(255, 170, 205, 0.22), transparent 18%);
+      filter: blur(35px);
+      animation: bgFloat 12s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes bgFloat {
+      from { transform: translateY(0px) translateX(0px) scale(1); }
+      to { transform: translateY(-10px) translateX(6px) scale(1.03); }
+    }
+
     body.focus-mode {
       background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.95), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(255,141,179,0.35), transparent 35%),
-        linear-gradient(135deg, #fff7fa, #ffe3ec, #ffcfe0);
+        radial-gradient(circle at top left, rgba(255,255,255,0.98), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255,141,179,0.30), transparent 35%),
+        linear-gradient(135deg, #fff8fb, #ffe7ef, #ffd7e5);
     }
 
     #photos-container {
       position: fixed;
       inset: 0;
       z-index: 1;
-      transition: filter 0.8s ease, opacity 0.8s ease;
+      transition: filter 0.9s ease, opacity 0.9s ease;
     }
 
     body.focus-mode #photos-container {
-      filter: blur(7px);
-      opacity: 0.45;
+      filter: blur(8px);
+      opacity: 0.42;
     }
 
     #hearts-container {
@@ -92,6 +121,39 @@
       z-index: 2;
       pointer-events: none;
       overflow: hidden;
+    }
+
+    #ending-glow {
+      position: fixed;
+      left: 50%;
+      bottom: 80px;
+      transform: translateX(-50%);
+      z-index: 58;
+      text-align: center;
+      color: var(--pink-7);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    #ending-glow.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-6px);
+    }
+
+    #ending-glow .line {
+      width: 120px;
+      height: 2px;
+      margin: 0 auto 10px;
+      background: linear-gradient(to right, transparent, rgba(243,92,151,0.7), transparent);
+      border-radius: 999px;
+      box-shadow: 0 0 12px rgba(243,92,151,0.28);
+    }
+
+    #ending-glow .text {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(24px, 4vw, 38px);
+      text-shadow: 0 4px 12px rgba(255,255,255,0.45);
     }
 
     .container {
@@ -112,12 +174,12 @@
 
     .tap-hint {
       position: absolute;
-      bottom: -52px;
-      font-family: "Times New Roman", serif;
-      font-size: 14px;
-      letter-spacing: 1px;
+      bottom: -56px;
+      font-family: "Inter", sans-serif;
+      font-size: 12px;
+      letter-spacing: 2px;
       color: var(--text-soft);
-      opacity: 0.8;
+      opacity: 0.88;
       text-transform: uppercase;
       transition: opacity 0.4s ease, transform 0.4s ease;
       user-select: none;
@@ -133,12 +195,29 @@
       width: var(--env-width);
       height: var(--env-height);
       cursor: pointer;
-      animation: float 3.6s ease-in-out infinite;
+      animation: float 3.8s ease-in-out infinite;
       filter: drop-shadow(0 18px 30px rgba(185, 45, 98, 0.18));
+      transition: transform 0.45s ease, filter 0.45s ease;
     }
 
-    .envelope.open {
+    .envelope:hover {
+      transform: scale(1.015);
+      filter: drop-shadow(0 22px 36px rgba(185, 45, 98, 0.22));
+    }
+
+    .envelope.open,
+    .envelope.open:hover {
       animation: none;
+      transform: scale(1);
+    }
+
+    .envelope.opening .seal {
+      animation: sealPop 0.35s ease forwards;
+    }
+
+    @keyframes sealPop {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(0.76); opacity: 0; }
     }
 
     @keyframes float {
@@ -150,9 +229,9 @@
     .envelope-back {
       position: absolute;
       inset: 0;
-      border-radius: 18px;
+      border-radius: 20px;
       background:
-        linear-gradient(145deg, #ffd8e7, #ffb4ce);
+        linear-gradient(145deg, #ffd9e7, #ffb4ce);
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.65),
         inset 0 -6px 16px rgba(185,45,98,0.08),
@@ -164,8 +243,24 @@
       content: "";
       position: absolute;
       inset: 12px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.45);
+      pointer-events: none;
+    }
+
+    .envelope-back::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,0.16) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.10) 100%),
+        repeating-linear-gradient(
+          -45deg,
+          rgba(255,255,255,0.035) 0px,
+          rgba(255,255,255,0.035) 2px,
+          transparent 2px,
+          transparent 8px
+        );
       pointer-events: none;
     }
 
@@ -177,11 +272,24 @@
       height: 0;
       border-left: calc(var(--env-width) / 2) solid transparent;
       border-right: calc(var(--env-width) / 2) solid transparent;
-      border-top: calc(var(--env-height) * 0.58) solid #ff92b8;
+      border-top: calc(var(--env-height) * 0.58) solid #ff93b9;
       transform-origin: top center;
-      transition: transform 0.8s ease;
+      transition: transform 0.8s cubic-bezier(.2,.75,.25,1);
       z-index: 5;
-      filter: drop-shadow(0 4px 10px rgba(185,45,98,0.1));
+      filter: drop-shadow(0 4px 10px rgba(185,45,98,0.12));
+    }
+
+    .flap::before {
+      content: "";
+      position: absolute;
+      top: calc(var(--env-height) * -0.57);
+      left: calc(var(--env-width) / -2);
+      width: 0;
+      height: 0;
+      border-left: calc(var(--env-width) / 2) solid transparent;
+      border-right: calc(var(--env-width) / 2) solid transparent;
+      border-top: calc(var(--env-height) * 0.58) solid rgba(255,255,255,0.12);
+      mix-blend-mode: screen;
     }
 
     .flap::after {
@@ -192,7 +300,6 @@
       width: calc(var(--env-width) - 36px);
       height: 2px;
       background: rgba(255,255,255,0.3);
-      transform: rotate(0deg);
     }
 
     .envelope.open .flap {
@@ -208,7 +315,7 @@
       height: 0;
       border-left: calc(var(--env-width) / 2) solid transparent;
       border-right: calc(var(--env-width) / 2) solid transparent;
-      border-bottom: calc(var(--env-height) / 2) solid #f972a4;
+      border-bottom: calc(var(--env-height) / 2) solid #f973a6;
       z-index: 4;
       transition: filter 0.7s ease, opacity 0.7s ease;
     }
@@ -221,7 +328,7 @@
       height: 0;
       border-top: calc(var(--env-height) / 2) solid transparent;
       border-bottom: calc(var(--env-height) / 2) solid transparent;
-      border-left: calc(var(--env-width) / 2) solid #ff86b1;
+      border-left: calc(var(--env-width) / 2) solid #ff88b3;
       z-index: 4;
       transition: filter 0.7s ease, opacity 0.7s ease;
     }
@@ -234,7 +341,7 @@
       height: 0;
       border-top: calc(var(--env-height) / 2) solid transparent;
       border-bottom: calc(var(--env-height) / 2) solid transparent;
-      border-right: calc(var(--env-width) / 2) solid #ff86b1;
+      border-right: calc(var(--env-width) / 2) solid #ff88b3;
       z-index: 4;
       transition: filter 0.7s ease, opacity 0.7s ease;
     }
@@ -244,12 +351,12 @@
       left: 50%;
       top: 56%;
       transform: translate(-50%, -50%);
-      width: 70px;
-      height: 70px;
+      width: 76px;
+      height: 76px;
       border-radius: 50%;
       z-index: 6;
       background:
-        radial-gradient(circle at 35% 30%, #ffb5cb, #f25a94 60%, #ca2f69);
+        radial-gradient(circle at 35% 30%, #ffcadb, #f25a94 58%, #bf2b62);
       box-shadow:
         0 10px 18px rgba(185,45,98,0.25),
         inset 0 2px 6px rgba(255,255,255,0.35),
@@ -257,14 +364,35 @@
       display: grid;
       place-items: center;
       color: white;
-      font-size: 28px;
-      font-weight: bold;
       transition: transform 0.5s ease, opacity 0.5s ease;
+      overflow: hidden;
     }
 
     .seal::before {
-      content: "❤";
-      transform: translateY(-1px);
+      content: "I♡K";
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+
+    .seal::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border-radius: 50%;
+      border: 1px dashed rgba(255,255,255,0.28);
+      pointer-events: none;
+    }
+
+    .envelope:not(.open) .seal {
+      animation: sealPulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes sealPulse {
+      0%,100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.03); }
     }
 
     .envelope.open .seal {
@@ -289,7 +417,7 @@
       background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 24px 20px 28px;
       box-shadow:
         0 8px 20px rgba(185,45,98,0.08),
@@ -302,14 +430,15 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
       transition:
-        top 0.8s ease,
-        left 0.8s ease,
-        transform 0.8s ease,
-        height 0.8s ease,
-        width 0.8s ease,
-        bottom 0.8s ease,
-        box-shadow 0.8s ease,
-        border-radius 0.8s ease;
+        top 0.9s cubic-bezier(.2,.75,.25,1),
+        left 0.9s cubic-bezier(.2,.75,.25,1),
+        transform 0.9s cubic-bezier(.2,.75,.25,1),
+        height 0.9s cubic-bezier(.2,.75,.25,1),
+        width 0.9s cubic-bezier(.2,.75,.25,1),
+        bottom 0.9s cubic-bezier(.2,.75,.25,1),
+        box-shadow 0.9s ease,
+        border-radius 0.9s ease,
+        opacity 0.5s ease;
     }
 
     .letter::-webkit-scrollbar {
@@ -328,7 +457,7 @@
       height: min(80vh, 760px);
       max-height: 80vh;
       z-index: 50;
-      border-radius: 24px;
+      border-radius: 26px;
       box-shadow: var(--shadow-strong);
       cursor: default;
     }
@@ -345,13 +474,30 @@
       pointer-events: none;
     }
 
+    .letter::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 31px,
+          rgba(243,92,151,0.035) 32px
+        );
+      opacity: 0.35;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
     .letter h2 {
       text-align: center;
       margin: 0 0 18px;
       color: var(--pink-6);
-      font-size: clamp(22px, 4vw, 30px);
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      font-family: "Playfair Display", "Cormorant Garamond", serif;
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 700;
+      letter-spacing: 0.4px;
       position: sticky;
       top: 0;
       background: rgba(255,255,255,0.92);
@@ -363,13 +509,27 @@
     }
 
     #letter-text {
-      font-size: clamp(15px, 2.6vw, 18px);
-      line-height: 1.95;
+      position: relative;
+      font-size: clamp(17px, 2.5vw, 21px);
+      line-height: 1.8;
       word-wrap: break-word;
       overflow-wrap: break-word;
       white-space: normal;
       color: var(--text-dark);
-      padding-bottom: 12px;
+      padding-bottom: 18px;
+      z-index: 1;
+      min-height: 120px;
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 1ch;
+      color: var(--pink-6);
+      animation: blinkCursor 0.9s steps(1) infinite;
+    }
+
+    @keyframes blinkCursor {
+      50% { opacity: 0; }
     }
 
     .highlight {
@@ -381,7 +541,10 @@
       display: inline-block;
       margin-top: 8px;
       color: var(--pink-7);
-      font-style: italic;
+      font-family: "Great Vibes", cursive;
+      font-size: 34px;
+      line-height: 1.2;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.4);
     }
 
     .photo-frame {
@@ -389,24 +552,29 @@
       padding: 8px 8px 18px;
       background: rgba(255,255,255,0.92);
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
-      border-radius: 10px;
+      border-radius: 12px;
       opacity: 0;
       transform: scale(0.55);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transition: opacity 0.9s ease, transform 0.9s ease;
       backdrop-filter: blur(4px);
+      animation: photoDrift 7s ease-in-out infinite alternate;
+    }
+
+    @keyframes photoDrift {
+      from { transform: translateY(0px) rotate(var(--rotation)) scale(var(--frame-scale, 1)); }
+      to { transform: translateY(-6px) rotate(calc(var(--rotation) + 1deg)) scale(var(--frame-scale, 1)); }
     }
 
     .photo-frame.visible {
       opacity: 1;
-      transform: scale(1) rotate(var(--rotation));
     }
 
     .photo-frame img {
       display: block;
-      width: 74px;
-      height: 74px;
+      width: var(--img-size, 74px);
+      height: var(--img-size, 74px);
       object-fit: cover;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid rgba(255,255,255,0.7);
     }
 
@@ -469,8 +637,9 @@
       background: rgba(255,255,255,0.65);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      font-size: 12px;
-      letter-spacing: 1px;
+      font-family: "Inter", sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--text-soft);
       box-shadow: 0 10px 20px rgba(0,0,0,0.06);
@@ -486,8 +655,8 @@
 
     @media (min-width: 768px) {
       .photo-frame img {
-        width: 112px;
-        height: 112px;
+        width: var(--img-size, 112px);
+        height: var(--img-size, 112px);
       }
     }
 
@@ -495,6 +664,31 @@
       .envelope.open .letter {
         height: 84vh;
         max-height: 84vh;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .tap-hint {
+        bottom: -48px;
+        font-size: 11px;
+      }
+
+      .signature {
+        font-size: 30px;
+      }
+
+      #ending-glow {
+        bottom: 92px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -525,19 +719,27 @@
 
   <div class="close-tip">Tap outside the letter to close</div>
 
+  <div id="ending-glow">
+    <div class="line"></div>
+    <div class="text">Forever yours</div>
+  </div>
+
   <script>
     const envelope = document.getElementById("envelope");
     const letter = document.getElementById("letter");
     const letterTextContainer = document.getElementById("letter-text");
     const photosContainer = document.getElementById("photos-container");
     const heartsContainer = document.getElementById("hearts-container");
+    const endingGlow = document.getElementById("ending-glow");
 
     let isOpen = false;
     let typingTimeout;
     let heartsInterval = null;
+    let startY = 0;
+    let currentY = 0;
 
     const myLetterHTML = `
-      To my <span class="highlight">beautiful</span> Girl,<br><br>
+      To my <span class="highlight">beautiful</span> Ishara,<br><br>
       Nearly five years, and I still find myself wondering how I got so <span class="highlight">lucky</span>. Before you, I was a different man, wandering in the dark—but you became the <span class="highlight">light</span> that showed me the way home. You didn't just change my life; you gave it a heartbeat and a hope I never knew existed.<br><br>
 
       We’ve had our storms and our silent battles, our arguments and our tears, but every time the dust settles, I only see <span class="highlight">you</span>. Thank you for holding on to me, for believing in us, and for being the anchor that keeps me steady. You are my <span class="highlight">sanctuary</span>, my soul, and my forever.<br><br>
@@ -568,7 +770,6 @@
 
     envelope.addEventListener("click", (e) => {
       e.stopPropagation();
-
       if (!isOpen) {
         openLetter();
       }
@@ -580,38 +781,71 @@
 
     document.addEventListener("click", (e) => {
       if (!isOpen) return;
-
       if (!e.target.closest(".envelope")) {
         closeLetter();
       }
     });
 
-    function openLetter() {
-      envelope.classList.add("open");
-      document.body.classList.add("focus-mode");
-      isOpen = true;
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && isOpen) {
+        closeLetter();
+      }
+    });
 
-      letterTextContainer.innerHTML = "";
-      letter.scrollTop = 0;
-      clearTimeout(typingTimeout);
+    letter.addEventListener("touchstart", (e) => {
+      if (!isOpen) return;
+      startY = e.touches[0].clientY;
+      currentY = startY;
+    }, { passive: true });
+
+    letter.addEventListener("touchmove", (e) => {
+      if (!isOpen) return;
+      currentY = e.touches[0].clientY;
+    }, { passive: true });
+
+    letter.addEventListener("touchend", () => {
+      if (!isOpen) return;
+      const delta = currentY - startY;
+      const atTop = letter.scrollTop <= 5;
+
+      if (delta > 90 && atTop) {
+        closeLetter();
+      }
+    });
+
+    function openLetter() {
+      isOpen = true;
+      endingGlow.classList.remove("show");
       stopFloatingHearts();
+      letterTextContainer.innerHTML = "";
+
+      envelope.classList.add("opening");
+      document.body.classList.add("focus-mode");
 
       setTimeout(() => {
-        typeLetter(myLetterHTML, 0, "");
-      }, 650);
+        envelope.classList.add("open");
+        letter.scrollTop = 0;
+        createSparkles();
+        showPhotos();
+      }, 220);
 
-      createSparkles();
-      showPhotos();
+      setTimeout(() => {
+        envelope.classList.remove("opening");
+        typeLetter(myLetterHTML, 0, "");
+      }, 820);
     }
 
     function closeLetter() {
+      envelope.classList.remove("opening");
       envelope.classList.remove("open");
       document.body.classList.remove("focus-mode");
+      endingGlow.classList.remove("show");
       isOpen = false;
 
       clearTimeout(typingTimeout);
       stopFloatingHearts();
       hidePhotos();
+      letterTextContainer.innerHTML = "";
     }
 
     function typeLetter(fullText, index, currentString) {
@@ -625,22 +859,35 @@
           index++;
         }
 
-        letterTextContainer.innerHTML = currentString;
+        letterTextContainer.innerHTML = currentString + '<span class="typing-cursor">|</span>';
         letter.scrollTop = letter.scrollHeight;
+
+        let delay = 24;
+        const prevChar = fullText.charAt(index - 1);
+
+        if (prevChar === "." || prevChar === "!" || prevChar === "?") delay = 110;
+        else if (prevChar === "," || prevChar === ";") delay = 65;
+        else if (prevChar === " ") delay = 14;
+        else delay = 24 + Math.random() * 18;
 
         typingTimeout = setTimeout(() => {
           typeLetter(fullText, index, currentString);
-        }, 26);
+        }, delay);
       } else {
+        letterTextContainer.innerHTML = currentString;
         startFloatingHearts();
+        showEndingEffect();
       }
     }
 
     function showPhotos() {
       photosContainer.innerHTML = "";
 
-      const cols = 4;
-      const rows = 5;
+      const isMobile = window.innerWidth < 640;
+      const count = isMobile ? Math.min(10, memories.length) : memories.length;
+
+      const cols = isMobile ? 3 : 4;
+      const rows = isMobile ? 4 : 5;
       const slots = [];
 
       for (let c = 0; c < cols; c++) {
@@ -651,32 +898,39 @@
 
       slots.sort(() => Math.random() - 0.5);
 
-      memories.forEach((src, i) => {
+      memories.slice(0, count).forEach((src, i) => {
         const frame = document.createElement("div");
         frame.className = "photo-frame";
 
         const img = document.createElement("img");
         img.src = src;
-        img.alt = "memory photo";
+        img.alt = `memory photo ${i + 1}`;
+        img.loading = "eager";
         frame.appendChild(img);
 
         const slot = slots[i % slots.length];
         const cellWidth = 100 / cols;
         const cellHeight = 100 / rows;
 
-        const x = slot.c * cellWidth + Math.random() * (cellWidth - 12);
-        const y = slot.r * cellHeight + Math.random() * (cellHeight - 12);
-        const rotation = Math.floor(Math.random() * 30) - 15;
+        const x = slot.c * cellWidth + Math.random() * (cellWidth - 14);
+        const y = slot.r * cellHeight + Math.random() * (cellHeight - 14);
+        const rotation = Math.floor(Math.random() * 24) - 12;
+        const size = isMobile
+          ? 58 + Math.random() * 28
+          : 74 + Math.random() * 46;
+        const scale = 0.94 + Math.random() * 0.2;
 
         frame.style.left = `${x}vw`;
         frame.style.top = `${y}vh`;
         frame.style.setProperty("--rotation", `${rotation}deg`);
+        frame.style.setProperty("--img-size", `${size}px`);
+        frame.style.setProperty("--frame-scale", scale);
 
         photosContainer.appendChild(frame);
 
         setTimeout(() => {
           frame.classList.add("visible");
-        }, i * 110);
+        }, i * 120);
       });
     }
 
@@ -686,7 +940,7 @@
 
       setTimeout(() => {
         photosContainer.innerHTML = "";
-      }, 900);
+      }, 950);
     }
 
     function createSparkles() {
@@ -694,14 +948,14 @@
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      for (let i = 0; i < 34; i++) {
+      for (let i = 0; i < 38; i++) {
         const sparkle = document.createElement("div");
         sparkle.className = "sparkle";
         sparkle.style.left = `${centerX}px`;
         sparkle.style.top = `${centerY}px`;
 
         const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 150 + 40;
+        const distance = Math.random() * 160 + 45;
         const dx = Math.cos(angle) * distance;
         const dy = Math.sin(angle) * distance;
 
@@ -750,6 +1004,12 @@
       setTimeout(() => {
         heart.remove();
       }, duration * 1000);
+    }
+
+    function showEndingEffect() {
+      setTimeout(() => {
+        endingGlow.classList.add("show");
+      }, 350);
     }
 
     window.addEventListener("resize", () => {
