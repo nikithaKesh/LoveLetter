@@ -8,33 +8,39 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #ffe6ea; /* Light pink background */
+            background-color: #ffe6ea;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
             font-family: 'Georgia', serif;
         }
 
+        /* Responsive Container */
         .container {
             position: relative;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        /* Envelope Construction */
+        /* Envelope */
         .envelope {
             position: relative;
-            width: 300px;
+            width: 100%;
+            max-width: 320px;
             height: 200px;
             background-color: #f48fb1;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             transition: transform 0.3s;
-        }
-
-        .envelope:hover {
-            transform: translateY(-5px);
+            margin-top: 50px;
         }
 
         .flap {
@@ -43,9 +49,10 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid #e91e63;
+            /* Responsive borders based on standard max-width */
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 110px solid #e91e63;
             transform-origin: top;
             transition: transform 0.6s ease-in-out;
             z-index: 4;
@@ -56,13 +63,13 @@
             z-index: 1;
         }
 
-        /* The Letter */
+        /* Letter */
         .letter {
             position: absolute;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 280px;
+            width: 90%;
             height: 180px;
             background-color: #fff;
             border-radius: 5px;
@@ -72,26 +79,33 @@
             transition: transform 0.8s ease-in-out;
             z-index: 2;
             overflow-y: auto;
-            text-align: center;
             color: #333;
+            font-size: 16px;
+            line-height: 1.5;
         }
 
         .envelope.open .letter {
-            transform: translate(-50%, -200px); /* Slides the letter up */
+            transform: translate(-50%, -180px);
             height: auto;
-            max-height: 400px;
+            max-height: 350px;
             z-index: 5;
         }
 
-        /* Envelope Shadows and Flaps */
+        /* Highlight text color */
+        .highlight {
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        /* Envelope base parts */
         .front {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
             border-bottom: 100px solid #d81b60;
             z-index: 3;
         }
@@ -104,7 +118,7 @@
             height: 0;
             border-top: 100px solid transparent;
             border-bottom: 100px solid transparent;
-            border-left: 150px solid #ec407a;
+            border-left: 160px solid #ec407a;
             z-index: 3;
         }
         
@@ -116,49 +130,92 @@
             height: 0;
             border-top: 100px solid transparent;
             border-bottom: 100px solid transparent;
-            border-right: 150px solid #ec407a;
+            border-right: 160px solid #ec407a;
             z-index: 3;
         }
 
-        /* Floating Hearts Animation */
-        .heart {
+        /* Buttons */
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 15;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            color: white;
+            background-color: #e91e63;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #d81b60;
+            transform: scale(1.05);
+        }
+
+        /* Floating Photo Frames */
+        .photo-frame {
             position: absolute;
-            bottom: -50px;
-            width: 20px;
-            height: 20px;
-            background-color: #ff4d6d;
-            transform: rotate(-45deg);
-            animation: floatUp 4s ease-in infinite;
+            padding: 10px 10px 30px 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-radius: 2px;
             z-index: 1;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 1s, transform 1s;
         }
 
-        .heart::before,
-        .heart::after {
-            content: '';
+        .photo-frame.visible {
+            opacity: 1;
+            transform: scale(1) rotate(var(--rotation));
+        }
+
+        .photo-frame img {
+            width: 100px; /* Adjust size for mobile */
+            height: 100px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        @media (min-width: 600px) {
+            .photo-frame img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        /* Sparkles */
+        .sparkle {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #ff4d6d;
+            width: 8px;
+            height: 8px;
+            background-color: #ffd700;
             border-radius: 50%;
+            box-shadow: 0 0 10px #ffd700, 0 0 20px #ffea00;
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+            animation: sparkle-burst 1.5s ease-out forwards;
         }
 
-        .heart::before {
-            top: -10px;
-            left: 0;
+        @keyframes sparkle-burst {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
         }
 
-        .heart::after {
-            top: 0;
-            left: 10px;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(-45deg); opacity: 0; }
-        }
     </style>
 </head>
 <body>
+
+    <div id="photos-container"></div>
 
     <div class="container">
         <div class="envelope" id="envelope">
@@ -168,55 +225,168 @@
             <div class="front"></div>
             
             <div class="letter">
-                <h2>For My Love</h2>
-                <p>Replace this text with your writings for her.</p>
-                <p>You can add as many paragraphs as you like here. The letter is set to expand and scroll automatically so she can read the whole thing.</p>
+                <h2 style="text-align: center;">For My Love</h2>
+                <div id="letter-text"></div>
             </div>
+        </div>
+
+        <div class="controls">
+            <button id="openBtn">Open Envelope</button>
+            <button id="closeBtn">Close</button>
         </div>
     </div>
 
     <script>
         const envelope = document.getElementById('envelope');
-        let isOpen = false;
-        let heartInterval;
+        const openBtn = document.getElementById('openBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const letterTextContainer = document.getElementById('letter-text');
+        const photosContainer = document.getElementById('photos-container');
 
-        // Toggle envelope state on click
-        envelope.addEventListener('click', () => {
+        let isOpen = false;
+        let typingTimeout;
+
+        // 1. ADD YOUR TEXT HERE
+        // Use <span class="highlight">word</span> to highlight specific words
+        const myLetterHTML = `
+            My dearest,<br><br>
+            I wanted to make something <span class="highlight">special</span> just for you. Every moment we share together is an absolute <span class="highlight">treasure</span>.<br><br>
+            You make my world brighter, and I love you more with every passing day.<br><br>
+            Forever yours.
+        `;
+
+        // 2. ADD YOUR PHOTO LINKS HERE
+        // Replace these URLs with links to your own pictures
+        const memories = [
+            'https://via.placeholder.com/150/ffb6c1/ffffff?text=Photo+1',
+            'https://via.placeholder.com/150/ffc0cb/ffffff?text=Photo+2',
+            'https://via.placeholder.com/150/ff69b4/ffffff?text=Photo+3',
+            'https://via.placeholder.com/150/db7093/ffffff?text=Photo+4'
+        ];
+
+        // Button Listeners
+        openBtn.addEventListener('click', () => {
             if (!isOpen) {
                 envelope.classList.add('open');
-                startHearts();
                 isOpen = true;
-            } else {
-                envelope.classList.remove('open');
-                stopHearts();
-                isOpen = false;
+                
+                // Clear any existing text and start typing
+                letterTextContainer.innerHTML = "";
+                clearTimeout(typingTimeout);
+                
+                // Delay typing slightly so the envelope has time to open
+                setTimeout(() => {
+                    typeLetter(myLetterHTML, 0, "");
+                }, 800);
+
+                createSparkles();
+                showPhotos();
             }
         });
 
-        // Generate the cute background effect
-        function startHearts() {
-            heartInterval = setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
+        closeBtn.addEventListener('click', () => {
+            if (isOpen) {
+                envelope.classList.remove('open');
+                isOpen = false;
                 
-                // Randomize starting position and animation speed
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+                // Stop typing effect
+                clearTimeout(typingTimeout);
                 
-                document.body.appendChild(heart);
+                hidePhotos();
+            }
+        });
 
-                // Clean up DOM after animation completes
-                setTimeout(() => {
-                    heart.remove();
-                }, 5000);
-            }, 300);
+        // Typing Effect Function (HTML Safe)
+        function typeLetter(fullText, index, currentString) {
+            if (index < fullText.length) {
+                // If we hit an HTML tag, inject the whole tag at once so it doesn't break
+                if (fullText.charAt(index) === '<') {
+                    let tagEnd = fullText.indexOf('>', index);
+                    currentString += fullText.substring(index, tagEnd + 1);
+                    index = tagEnd + 1;
+                } else {
+                    currentString += fullText.charAt(index);
+                    index++;
+                }
+                
+                letterTextContainer.innerHTML = currentString;
+                
+                // Adjust speed here (currently 40ms per character)
+                typingTimeout = setTimeout(() => {
+                    typeLetter(fullText, index, currentString);
+                }, 40);
+            }
         }
 
-        // Stop the background effect
-        function stopHearts() {
-            clearInterval(heartInterval);
-            const hearts = document.querySelectorAll('.heart');
-            hearts.forEach(h => h.remove());
+        // Floating Photos Function
+        function showPhotos() {
+            photosContainer.innerHTML = ''; // clear old photos
+            
+            memories.forEach((src, i) => {
+                const frame = document.createElement('div');
+                frame.classList.add('photo-frame');
+                
+                const img = document.createElement('img');
+                img.src = src;
+                frame.appendChild(img);
+                
+                // Randomize positions around the screen
+                const randomX = Math.floor(Math.random() * 80) + 10; // 10% to 90%
+                const randomY = Math.floor(Math.random() * 80) + 10;
+                // Randomize rotation between -20deg and 20deg
+                const rotation = Math.floor(Math.random() * 40) - 20;
+
+                frame.style.left = `${randomX}vw`;
+                frame.style.top = `${randomY}vh`;
+                frame.style.setProperty('--rotation', `${rotation}deg`);
+                
+                photosContainer.appendChild(frame);
+
+                // Stagger the fade in
+                setTimeout(() => {
+                    frame.classList.add('visible');
+                }, i * 300);
+            });
+        }
+
+        function hidePhotos() {
+            const frames = document.querySelectorAll('.photo-frame');
+            frames.forEach(frame => {
+                frame.classList.remove('visible');
+            });
+            setTimeout(() => {
+                photosContainer.innerHTML = '';
+            }, 1000);
+        }
+
+        // Sparkle Animation
+        function createSparkles() {
+            const envelopeRect = envelope.getBoundingClientRect();
+            // Center of the envelope
+            const centerX = envelopeRect.left + (envelopeRect.width / 2);
+            const centerY = envelopeRect.top + (envelopeRect.height / 2);
+
+            for (let i = 0; i < 40; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                
+                sparkle.style.left = `${centerX}px`;
+                sparkle.style.top = `${centerY}px`;
+
+                // Randomize explosion directions
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 150 + 50; // Distance to travel
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+
+                sparkle.style.setProperty('--dx', `${dx}px`);
+                sparkle.style.setProperty('--dy', `${dy}px`);
+                
+                document.body.appendChild(sparkle);
+
+                // Clean up sparkles after animation
+                setTimeout(() => sparkle.remove(), 1500);
+            }
         }
     </script>
 </body>
