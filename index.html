@@ -107,12 +107,26 @@
       position: fixed;
       inset: 0;
       z-index: 1;
-      transition: filter 0.9s ease, opacity 0.9s ease;
+      transition: filter 1.2s ease, opacity 1.2s ease;
     }
 
     body.focus-mode #photos-container {
       filter: blur(8px);
       opacity: 0.42;
+    }
+
+    body.memory-mode #photos-container {
+      filter: blur(2px) saturate(0.92);
+      opacity: 0.72;
+    }
+
+    body.memory-mode .photo-frame {
+      opacity: 0.78 !important;
+      transform: scale(var(--frame-scale, 1)) rotate(var(--rotation)) !important;
+    }
+
+    body.memory-mode .photo-frame img {
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.18);
     }
 
     #hearts-container {
@@ -172,6 +186,29 @@
       place-items: center;
     }
 
+    .envelope-wrap::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(243,92,151,0.22), rgba(243,92,151,0.08), transparent 70%);
+      filter: blur(22px);
+      z-index: 0;
+      animation: haloPulse 3.5s ease-in-out infinite;
+    }
+
+    @keyframes haloPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.75;
+      }
+      50% {
+        transform: scale(1.08);
+        opacity: 1;
+      }
+    }
+
     .tap-hint {
       position: absolute;
       bottom: -56px;
@@ -183,6 +220,9 @@
       text-transform: uppercase;
       transition: opacity 0.4s ease, transform 0.4s ease;
       user-select: none;
+      text-align: center;
+      width: max-content;
+      max-width: 90vw;
     }
 
     .envelope.open + .tap-hint {
@@ -612,6 +652,10 @@
       user-select: none;
     }
 
+    .ambient-heart {
+      filter: blur(0.2px) drop-shadow(0 2px 4px rgba(243,92,151,0.12));
+    }
+
     @keyframes float-heart {
       0% {
         transform: translateY(0) translateX(0) scale(0.8);
@@ -713,7 +757,7 @@
         </div>
       </div>
 
-      <div class="tap-hint">Tap to open</div>
+      <div class="tap-hint">For Ishara, with all my love</div>
     </div>
   </div>
 
@@ -735,6 +779,7 @@
     let isOpen = false;
     let typingTimeout;
     let heartsInterval = null;
+    let ambientHeartsInterval = null;
     let startY = 0;
     let currentY = 0;
 
@@ -817,8 +862,10 @@
       isOpen = true;
       endingGlow.classList.remove("show");
       stopFloatingHearts();
+      stopAmbientHearts();
       letterTextContainer.innerHTML = "";
 
+      document.body.classList.remove("memory-mode");
       envelope.classList.add("opening");
       document.body.classList.add("focus-mode");
 
@@ -839,13 +886,22 @@
       envelope.classList.remove("opening");
       envelope.classList.remove("open");
       document.body.classList.remove("focus-mode");
+      document.body.classList.add("memory-mode");
       endingGlow.classList.remove("show");
       isOpen = false;
 
       clearTimeout(typingTimeout);
       stopFloatingHearts();
-      hidePhotos();
       letterTextContainer.innerHTML = "";
+
+      envelope.style.transform = "scale(0.985)";
+      setTimeout(() => {
+        envelope.style.transform = "";
+      }, 220);
+
+      setTimeout(() => {
+        startAmbientHearts();
+      }, 400);
     }
 
     function typeLetter(fullText, index, currentString) {
@@ -881,7 +937,7 @@
     }
 
     function showPhotos() {
-      photosContainer.innerHTML = "";
+      if (photosContainer.children.length > 0) return;
 
       const isMobile = window.innerWidth < 640;
       const count = isMobile ? Math.min(10, memories.length) : memories.length;
@@ -980,6 +1036,53 @@
       heartsContainer.innerHTML = "";
     }
 
+    function startAmbientHearts() {
+      stopAmbientHearts();
+
+      ambientHeartsInterval = setInterval(() => {
+        createAmbientHeart();
+      }, 900);
+    }
+
+    function stopAmbientHearts() {
+      if (ambientHeartsInterval) {
+        clearInterval(ambientHeartsInterval);
+        ambientHeartsInterval = null;
+      }
+
+      const ambientHearts = document.querySelectorAll(".ambient-heart");
+      ambientHearts.forEach((heart) => heart.remove());
+    }
+
+    function createAmbientHeart() {
+      if (isOpen) return;
+
+      const heart = document.createElement("div");
+      heart.className = "heart ambient-heart";
+      heart.innerHTML = "❤";
+
+      const left = 15 + Math.random() * 70;
+      const duration = 6 + Math.random() * 4;
+      const drift = `${Math.random() * 40 - 20}px`;
+      const scale = 0.45 + Math.random() * 0.35;
+      const size = 8 + Math.random() * 8;
+      const colors = ["#ffb3cf", "#ff9fc4", "#ffc2da"];
+
+      heart.style.left = `${left}vw`;
+      heart.style.fontSize = `${size}px`;
+      heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.opacity = "0.55";
+      heart.style.animationDuration = `${duration}s`;
+      heart.style.setProperty("--drift-x", drift);
+      heart.style.setProperty("--scale", scale);
+
+      heartsContainer.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, duration * 1000);
+    }
+
     function createHeart() {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -1017,6 +1120,8 @@
         letter.scrollTop = letter.scrollHeight;
       }
     });
+
+    startAmbientHearts();
   </script>
 </body>
 </html>
