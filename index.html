@@ -11,11 +11,11 @@
             background-color: #ffe6ea;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* PERFECTLY CENTERS VERTICALLY */
-            align-items: center;     /* PERFECTLY CENTERS HORIZONTALLY */
+            justify-content: center; 
+            align-items: center;
             min-height: 100vh;
             overflow-x: hidden; 
-            overflow-y: auto; 
+            overflow-y: hidden; /* Prevents background scrolling */
             font-family: 'Georgia', serif;
             transition: background-color 0.8s;
         }
@@ -26,7 +26,7 @@
         }
 
         #photos-container {
-            position: fixed; /* Keeps photos in place even if scrolling */
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100vw;
@@ -55,19 +55,32 @@
             transition: transform 0.8s ease-in-out;
         }
 
-        /* Slides the envelope down when open to make room for the big letter */
+        /* Slides the envelope slightly to center the massive letter */
         body.focus-mode .container {
-            transform: translateY(60px); 
+            transform: translateY(40px); 
         }
 
-        /* BIGGER ENVELOPE BASE */
+        /* The Envelope Base */
         .envelope {
             position: relative;
-            width: 360px;  /* Increased size */
-            height: 240px; /* Increased size */
+            width: 360px; 
+            height: 240px;
             background-color: #f48fb1;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             transition: transform 0.3s;
+            cursor: pointer; /* Changes the mouse icon to a pointing finger */
+            animation: float 3s ease-in-out infinite; /* Gentle floating animation */
+        }
+
+        /* Stop the floating animation when it's open so it's easier to read */
+        .envelope.open {
+            animation: none; 
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
         }
 
         .flap {
@@ -96,27 +109,37 @@
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
-            height: auto;
-            max-height: 210px; /* Uses max-height to fix the text cut-off bug */
+            height: 180px; 
             background-color: #fff;
             border-radius: 8px;
             padding: 40px 25px 50px 25px;
             box-sizing: border-box;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.8s ease-in-out, max-height 0.8s ease-in-out, box-shadow 0.8s;
+            transition: transform 0.8s ease-in-out, height 0.8s ease-in-out, box-shadow 0.8s;
             z-index: 2;
-            overflow: hidden; 
             color: #333;
-            font-size: 17px; /* Larger text */
+            font-size: 17px; 
             line-height: 1.6;
+            
+            /* INVISIBLE SCROLL BAR SETUP */
+            overflow-y: auto; 
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
 
-        /* Fully pops the letter out and scales it up for reading */
+        /* Hides scrollbar on Chrome, Safari and Opera */
+        .letter::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Pops the letter out, centers it, and gives it a massive fixed height */
         .envelope.open .letter {
-            transform: translate(-50%, -170px) scale(1.05); /* Slides out just right to stay connected */
-            max-height: 800px; /* Let the text grow without getting cut off */
-            z-index: 20;
+            transform: translate(-50%, -60px) scale(1.05); 
+            height: 65vh; /* Fixes the height immediately so text doesn't push it up */
+            max-height: 600px;
+            z-index: 5; /* Brings it perfectly to the front */
             box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            cursor: default; /* Stops the text from looking clickable */
         }
 
         .highlight {
@@ -124,7 +147,7 @@
             font-weight: bold;
         }
 
-        /* Envelope base parts calculated for the new bigger size */
+        /* Envelope base parts */
         .front, .side-left, .side-right {
             transition: filter 0.8s, brightness 0.8s;
         }
@@ -166,38 +189,11 @@
         }
 
         /* Blur the physical envelope parts to keep focus entirely on the letter */
-        /* Note: Flap is not blurred to stop the Chrome disappearing bug */
         body.focus-mode .front,
         body.focus-mode .side-left,
         body.focus-mode .side-right {
             filter: blur(3px);
             brightness: 0.9;
-        }
-
-        /* Buttons */
-        .controls {
-            margin-top: 50px;
-            display: flex;
-            gap: 15px;
-            z-index: 25; 
-        }
-
-        button {
-            padding: 12px 24px;
-            font-size: 16px;
-            font-family: 'Georgia', serif;
-            color: white;
-            background-color: #e91e63;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        button:hover {
-            background-color: #d81b60;
-            transform: scale(1.05);
         }
 
         /* Floating Photo Frames */
@@ -224,13 +220,13 @@
             border: 1px solid #eee;
         }
 
-        /* MASSIVE SCALE UP FOR DESKTOP */
+        /* DESKTOP SIZING */
         @media (min-width: 600px) {
             .container {
-                transform: scale(1.3); /* 30% larger on desktop */
+                transform: scale(1.3); 
             }
             body.focus-mode .container {
-                transform: scale(1.3) translateY(40px);
+                transform: scale(1.3) translateY(20px);
             }
             .photo-frame {
                 padding: 8px 8px 25px 8px;
@@ -279,17 +275,10 @@
                 <div id="letter-text"></div>
             </div>
         </div>
-
-        <div class="controls">
-            <button id="openBtn">Open Envelope</button>
-            <button id="closeBtn">Close</button>
-        </div>
     </div>
 
     <script>
         const envelope = document.getElementById('envelope');
-        const openBtn = document.getElementById('openBtn');
-        const closeBtn = document.getElementById('closeBtn');
         const letterTextContainer = document.getElementById('letter-text');
         const photosContainer = document.getElementById('photos-container');
 
@@ -323,7 +312,11 @@
             'WhatsApp Image 2026-03-12 at 16.51.58.jpeg'
         ];
 
-        openBtn.addEventListener('click', () => {
+        // Click handler for the envelope
+        envelope.addEventListener('click', (e) => {
+            // If she is clicking/swiping inside the letter to read it, don't close the envelope!
+            if (e.target.closest('.letter') && isOpen) return;
+
             if (!isOpen) {
                 envelope.classList.add('open');
                 document.body.classList.add('focus-mode'); 
@@ -338,11 +331,7 @@
 
                 createSparkles();
                 showPhotos();
-            }
-        });
-
-        closeBtn.addEventListener('click', () => {
-            if (isOpen) {
+            } else {
                 envelope.classList.remove('open');
                 document.body.classList.remove('focus-mode'); 
                 isOpen = false;
@@ -365,6 +354,10 @@
                 
                 letterTextContainer.innerHTML = currentString;
                 
+                // Automatically scrolls down as new text appears so she never loses her place
+                const letterDiv = document.querySelector('.letter');
+                letterDiv.scrollTop = letterDiv.scrollHeight;
+                
                 typingTimeout = setTimeout(() => {
                     typeLetter(fullText, index, currentString);
                 }, 40);
@@ -375,7 +368,6 @@
         function showPhotos() {
             photosContainer.innerHTML = ''; 
             
-            // Divide screen into a 4x5 grid (20 slots total)
             const cols = 4;
             const rows = 5;
             let slots = [];
@@ -385,7 +377,6 @@
                 }
             }
             
-            // Shuffle the grid slots so photos appear in random spots but never on top of each other
             slots.sort(() => Math.random() - 0.5);
 
             memories.forEach((src, i) => {
@@ -398,11 +389,9 @@
                 
                 const slot = slots[i % slots.length];
                 
-                // Calculate position within the specific grid cell
                 const cellWidth = 100 / cols;
                 const cellHeight = 100 / rows;
                 
-                // Keep photos slightly off the extreme edges
                 const randomX = (slot.c * cellWidth) + (Math.random() * (cellWidth - 10));
                 const randomY = (slot.r * cellHeight) + (Math.random() * (cellHeight - 10));
 
