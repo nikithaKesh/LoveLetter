@@ -11,10 +11,11 @@
             background-color: #ffe6ea;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; 
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden; 
+            overflow-y: auto; 
             font-family: 'Georgia', serif;
         }
 
@@ -29,15 +30,15 @@
             max-width: 500px;
             padding: 20px;
             box-sizing: border-box;
-            margin-top: 15vh; /* Pushed down to leave room for the tall letter */
+            margin-top: 25vh; 
+            margin-bottom: 50px; 
         }
 
-        /* Bigger Envelope */
+        /* Mobile-Safe Envelope Size */
         .envelope {
             position: relative;
-            width: 100%;
-            max-width: 360px;
-            height: 240px;
+            width: 300px; 
+            height: 200px;
             background-color: #f48fb1;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             transition: transform 0.3s;
@@ -49,9 +50,9 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 180px solid transparent;
-            border-right: 180px solid transparent;
-            border-top: 130px solid #e91e63;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid #e91e63;
             transform-origin: top;
             transition: transform 0.6s ease-in-out;
             z-index: 4;
@@ -69,7 +70,7 @@
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
-            height: 200px;
+            height: 180px;
             background-color: #fff;
             border-radius: 8px;
             padding: 30px 20px;
@@ -79,34 +80,32 @@
             z-index: 2;
             overflow: hidden; 
             color: #333;
-            font-size: 17px;
+            font-size: 16px; 
             line-height: 1.6;
         }
 
-        /* When Open: Expands completely to fit the text */
         .envelope.open .letter {
-            transform: translate(-50%, -220px); 
+            transform: translate(-50%, -180px); 
             height: max-content; 
-            min-height: 350px;
+            min-height: 300px;
             z-index: 5;
         }
 
-        /* Highlight text color */
         .highlight {
             color: #e91e63;
             font-weight: bold;
         }
 
-        /* Envelope base parts */
+        /* Envelope base parts calculated for 300px width */
         .front {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 0;
-            border-left: 180px solid transparent;
-            border-right: 180px solid transparent;
-            border-bottom: 120px solid #d81b60;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid #d81b60;
             z-index: 3;
         }
 
@@ -116,9 +115,9 @@
             left: 0;
             width: 0;
             height: 0;
-            border-top: 120px solid transparent;
-            border-bottom: 120px solid transparent;
-            border-left: 180px solid #ec407a;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-left: 150px solid #ec407a;
             z-index: 3;
         }
         
@@ -128,15 +127,15 @@
             right: 0;
             width: 0;
             height: 0;
-            border-top: 120px solid transparent;
-            border-bottom: 120px solid transparent;
-            border-right: 180px solid #ec407a;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-right: 150px solid #ec407a;
             z-index: 3;
         }
 
         /* Buttons */
         .controls {
-            margin-top: 60px;
+            margin-top: 50px;
             display: flex;
             gap: 15px;
             z-index: 15;
@@ -163,11 +162,11 @@
         /* Floating Photo Frames */
         .photo-frame {
             position: absolute;
-            padding: 8px 8px 25px 8px; /* Slightly smaller borders for collage */
+            padding: 5px 5px 15px 5px; 
             background: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* Stronger shadow for overlapping */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
             border-radius: 4px;
-            z-index: 1;
+            z-index: 1; 
             opacity: 0;
             transform: scale(0.5);
             transition: opacity 0.8s, transform 0.8s;
@@ -178,19 +177,21 @@
             transform: scale(1) rotate(var(--rotation));
         }
 
-        /* Made images slightly smaller so 17 of them fit nicely */
         .photo-frame img {
-            width: 70px; 
-            height: 70px;
+            width: 50px; 
+            height: 50px;
             object-fit: cover;
             border: 1px solid #eee;
         }
 
-        /* Desktop sizing */
         @media (min-width: 600px) {
+            .photo-frame {
+                padding: 8px 8px 25px 8px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            }
             .photo-frame img {
-                width: 110px;
-                height: 110px;
+                width: 100px;
+                height: 100px;
             }
         }
 
@@ -248,7 +249,6 @@
         let isOpen = false;
         let typingTimeout;
 
-        // 1. YOUR TEXT
         const myLetterHTML = `
             My dear love, Ishara,<br><br>
             I love you so much, and I feel incredibly <span class="highlight">lucky</span> to have you as my girlfriend. Having you in my life makes everything feel <span class="highlight">brighter</span> and more <span class="highlight">meaningful</span>. Your <span class="highlight">smile</span>, your <span class="highlight">kindness</span>, and the way you care about things mean so much to me. I’m truly <span class="highlight">grateful</span> for every moment we share together.<br><br>
@@ -256,7 +256,6 @@
             — From your babe, Keshan
         `;
 
-        // 2. YOUR PHOTO LINKS (All 17!)
         const memories = [
             'WhatsApp Image 2026-03-12 at 16.30.13.jpeg',
             'WhatsApp Image 2026-03-12 at 16.30.13 (2).jpeg',
@@ -277,13 +276,23 @@
             'WhatsApp Image 2026-03-12 at 16.51.58.jpeg'
         ];
 
-        // Button Listeners
+        // 17 Explicitly defined safe spots around the outer edge of the screen
+        const layoutPositions = [
+            // Top Edge
+            { x: 2, y: 2 }, { x: 20, y: 5 }, { x: 38, y: 2 }, { x: 56, y: 6 }, { x: 74, y: 2 },
+            // Right Edge
+            { x: 76, y: 22 }, { x: 72, y: 40 }, { x: 76, y: 58 }, { x: 73, y: 76 },
+            // Bottom Edge
+            { x: 75, y: 88 }, { x: 55, y: 85 }, { x: 35, y: 88 }, { x: 15, y: 84 }, { x: 2, y: 88 },
+            // Left Edge
+            { x: 5, y: 65 }, { x: 1, y: 45 }, { x: 4, y: 25 }
+        ];
+
         openBtn.addEventListener('click', () => {
             if (!isOpen) {
                 envelope.classList.add('open');
                 isOpen = true;
                 
-                // Clear any existing text and start typing
                 letterTextContainer.innerHTML = "";
                 clearTimeout(typingTimeout);
                 
@@ -301,13 +310,11 @@
                 envelope.classList.remove('open');
                 isOpen = false;
                 
-                // Stop typing effect
                 clearTimeout(typingTimeout);
                 hidePhotos();
             }
         });
 
-        // Typing Effect Function 
         function typeLetter(fullText, index, currentString) {
             if (index < fullText.length) {
                 if (fullText.charAt(index) === '<') {
@@ -327,7 +334,6 @@
             }
         }
 
-        // Dynamic Collage Function for 17 Photos
         function showPhotos() {
             photosContainer.innerHTML = ''; 
             
@@ -339,34 +345,21 @@
                 img.src = src;
                 frame.appendChild(img);
                 
-                // Distribute photos into 4 safe zones to avoid blocking the middle
-                let randomX, randomY;
-                let zone = i % 4; 
-
-                if (zone === 0) { // Top
-                    randomX = Math.random() * 80 + 5; 
-                    randomY = Math.random() * 15 + 2; 
-                } else if (zone === 1) { // Bottom
-                    randomX = Math.random() * 80 + 5; 
-                    randomY = Math.random() * 15 + 75; 
-                } else if (zone === 2) { // Left
-                    randomX = Math.random() * 15 + 2; 
-                    randomY = Math.random() * 80 + 10; 
-                } else { // Right
-                    randomX = Math.random() * 15 + 75; 
-                    randomY = Math.random() * 80 + 10; 
-                }
+                // Pull the exact, safe coordinate for this specific photo
+                const pos = layoutPositions[i % layoutPositions.length];
                 
-                // Random rotation between -20deg and 20deg for a messy collage look
+                // Add a tiny bit of random jitter (up to 2% either way) so it looks organic, not robotic
+                const jitterX = Math.random() * 4 - 2; 
+                const jitterY = Math.random() * 4 - 2;
+
                 const rotation = Math.floor(Math.random() * 40) - 20;
 
-                frame.style.left = `${randomX}vw`;
-                frame.style.top = `${randomY}vh`;
+                frame.style.left = `${pos.x + jitterX}vw`;
+                frame.style.top = `${pos.y + jitterY}vh`;
                 frame.style.setProperty('--rotation', `${rotation}deg`);
                 
                 photosContainer.appendChild(frame);
 
-                // Speed up the stagger slightly so all 17 load smoothly
                 setTimeout(() => {
                     frame.classList.add('visible');
                 }, i * 200); 
@@ -383,7 +376,6 @@
             }, 1000);
         }
 
-        // Sparkle Animation
         function createSparkles() {
             const envelopeRect = envelope.getBoundingClientRect();
             const centerX = envelopeRect.left + (envelopeRect.width / 2);
