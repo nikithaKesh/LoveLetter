@@ -66,7 +66,7 @@
     }
 
     body.focus-mode .container {
-      transform: translateY(8px);
+      transform: none;
     }
 
     .envelope {
@@ -158,7 +158,7 @@
     .letter {
       position: absolute;
       left: 50%;
-      bottom: 8px;
+      bottom: 10px;
       transform: translateX(-50%);
       width: 90%;
       height: 72%;
@@ -173,6 +173,8 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
       transition:
+        top 0.8s ease,
+        left 0.8s ease,
         transform 0.8s ease,
         height 0.8s ease,
         width 0.8s ease,
@@ -187,12 +189,16 @@
     }
 
     .envelope.open .letter {
-      width: min(92vw, 640px);
-      height: min(72vh, 700px);
-      bottom: calc(var(--env-height) * 0.18);
-      transform: translateX(-50%) translateY(-12px);
-      z-index: 6;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      bottom: auto;
+      transform: translate(-50%, -50%);
+      width: min(92vw, 650px);
+      height: min(78vh, 720px);
+      max-height: 78vh;
+      z-index: 50;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
       cursor: default;
     }
 
@@ -283,7 +289,8 @@
 
     @media (max-height: 650px) {
       .envelope.open .letter {
-        height: 78vh;
+        height: 84vh;
+        max-height: 84vh;
       }
     }
   </style>
