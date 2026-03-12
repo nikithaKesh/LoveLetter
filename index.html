@@ -32,9 +32,9 @@
     }
 
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative;
+      display: grid;
+      place-items: center;
       transition: background-color 0.6s ease;
     }
 
@@ -54,13 +54,21 @@
       opacity: 0.55;
     }
 
+    #hearts-container {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
     .container {
       position: relative;
       z-index: 10;
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
       padding: 20px;
       transition: transform 0.6s ease;
     }
@@ -276,6 +284,30 @@
       }
     }
 
+    .heart {
+      position: absolute;
+      bottom: -30px;
+      opacity: 0;
+      pointer-events: none;
+      animation: float-heart linear forwards;
+      filter: drop-shadow(0 2px 6px rgba(233, 30, 99, 0.25));
+      user-select: none;
+    }
+
+    @keyframes float-heart {
+      0% {
+        transform: translateY(0) translateX(0) scale(0.8);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-110vh) translateX(var(--drift-x)) scale(var(--scale));
+        opacity: 0;
+      }
+    }
+
     @media (min-width: 768px) {
       .photo-frame {
         padding: 8px 8px 22px;
@@ -297,6 +329,7 @@
 </head>
 <body>
   <div id="photos-container"></div>
+  <div id="hearts-container"></div>
 
   <div class="container">
     <div class="envelope" id="envelope">
@@ -317,9 +350,11 @@
     const letter = document.getElementById("letter");
     const letterTextContainer = document.getElementById("letter-text");
     const photosContainer = document.getElementById("photos-container");
+    const heartsContainer = document.getElementById("hearts-container");
 
     let isOpen = false;
     let typingTimeout;
+    let heartsInterval = null;
 
     const myLetterHTML = `
       My dear love, Ishara,<br><br>
@@ -367,6 +402,7 @@
       letterTextContainer.innerHTML = "";
       letter.scrollTop = 0;
       clearTimeout(typingTimeout);
+      stopFloatingHearts();
 
       setTimeout(() => {
         typeLetter(myLetterHTML, 0, "");
@@ -382,6 +418,7 @@
       isOpen = false;
 
       clearTimeout(typingTimeout);
+      stopFloatingHearts();
       hidePhotos();
     }
 
@@ -402,6 +439,8 @@
         typingTimeout = setTimeout(() => {
           typeLetter(fullText, index, currentString);
         }, 28);
+      } else {
+        startFloatingHearts();
       }
     }
 
@@ -480,6 +519,49 @@
         document.body.appendChild(sparkle);
         setTimeout(() => sparkle.remove(), 1500);
       }
+    }
+
+    function startFloatingHearts() {
+      stopFloatingHearts();
+
+      heartsInterval = setInterval(() => {
+        createHeart();
+      }, 220);
+    }
+
+    function stopFloatingHearts() {
+      if (heartsInterval) {
+        clearInterval(heartsInterval);
+        heartsInterval = null;
+      }
+
+      heartsContainer.innerHTML = "";
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "&#10084;";
+
+      const left = Math.random() * 100;
+      const duration = 4 + Math.random() * 4;
+      const drift = `${Math.random() * 80 - 40}px`;
+      const scale = 0.7 + Math.random() * 1.1;
+      const size = 10 + Math.random() * 16;
+      const colors = ["#ff4f93", "#ff7eb6", "#ff85c2", "#ff5fa2"];
+
+      heart.style.left = `${left}vw`;
+      heart.style.fontSize = `${size}px`;
+      heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.animationDuration = `${duration}s`;
+      heart.style.setProperty("--drift-x", drift);
+      heart.style.setProperty("--scale", scale);
+
+      heartsContainer.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, duration * 1000);
     }
 
     window.addEventListener("resize", () => {
