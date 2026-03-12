@@ -567,16 +567,21 @@
     ];
 
     envelope.addEventListener("click", (e) => {
-      if (isOpen && e.target.closest(".letter")) return;
+      e.stopPropagation();
 
       if (!isOpen) {
         openLetter();
       }
     });
 
+    letter.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
     document.addEventListener("click", (e) => {
       if (!isOpen) return;
-      if (!e.target.closest(".letter")) {
+
+      if (!e.target.closest(".envelope")) {
         closeLetter();
       }
     });
